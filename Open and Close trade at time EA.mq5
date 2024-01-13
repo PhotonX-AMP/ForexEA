@@ -13,9 +13,6 @@
 //+------------------------------------------------------------------+
 input int openHour, closeHour;
 CTrade trade;
-double myAccountBalance = AccountInfoDouble(ACCOUNT_BALANCE);
-double myAccountEquity = AccountInfoDouble(ACCOUNT_EQUITY);
-double myAccountProfit = AccountInfoDouble(ACCOUNT_PROFIT);
 
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
@@ -37,6 +34,11 @@ void OnDeinit(const int reason)
 void OnTick()
   {
   //Show account info
+   //These variables are defined here so that they get the account info after every tick.
+   double myAccountBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+   double myAccountEquity = AccountInfoDouble(ACCOUNT_EQUITY);
+   double myAccountProfit = AccountInfoDouble(ACCOUNT_PROFIT);
+
   Comment("Equity: ", myAccountEquity, "\n", "Balance: ", myAccountBalance, "\n", "profit: ", myAccountProfit);
   
    // Get current time
