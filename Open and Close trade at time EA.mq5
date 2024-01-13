@@ -11,7 +11,9 @@
 //+------------------------------------------------------------------+
 //| Varables                                                         |
 //+------------------------------------------------------------------+
-input int openHour, closeHour;
+input int openHour;
+input int closeHour;
+bool isTradeOpen = false;
 CTrade trade;
 
 //+------------------------------------------------------------------+
@@ -19,7 +21,11 @@ CTrade trade;
 //+------------------------------------------------------------------+
 int OnInit()
   {
-
+   //Check the user input 
+   if(openHour==closeHour)
+     {
+      Alert("Open Hour and Close Hour must differ!");
+     }
    return(INIT_SUCCEEDED);
   }
 //+------------------------------------------------------------------+
@@ -45,11 +51,26 @@ void OnTick()
    MqlDateTime timeNow;
    TimeToStruct(TimeCurrent(), timeNow);
    
-   //Check for an open trade
-   if(openHour == timeNow.hour){
+   //Check for an open trade and Open the trade.
+   if(openHour == timeNow.hour && !isTradeOpen){
    
      //This line opens the position
      trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, 1, SymbolInfoDouble(_Symbol,SYMBOL_ASK), 0, 0);
+     
+      //Indicate that trade is open
+     isTradeOpen = true;
      }
+     
+   if(closeHour == timeNow.hour && isTradeOpen){
+   
+     //Close position
+     trade.PositionClose(_Symbol);
+     
+      //Indicate that trade is open
+     isTradeOpen = false;
+     }
+     
   }
+  
+
 //+------------------------------------------------------------------+
